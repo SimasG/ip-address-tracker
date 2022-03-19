@@ -21,27 +21,42 @@
     <title>IP Address Tracker</title>
   </head>
   <body>
-    IP Address Tracker Search for any IP address or domain IP Address Location
-    Timezone UTC
+    <h1>IP Address Tracker</h1>
+    <main>
+      <form class="search-container" method="get">
+        <input type="text" name="IP address" id="ip-address-input" />
+        <button class="submit-btn">
+          <img
+            src="images/icon-arrow.svg"
+            alt="arrow icon"
+            class="icon-arrow"
+          />
+        </button>
+      </form>
+      <section class="main-container">
+        <div class="data-point">
+          <h3>ip address</h3>
+          <h2>192.212.174.101</h2>
+        </div>
+        <div class="data-point">
+          <h3>Location</h3>
+          <h2>Brooklyn, NY 10001</h2>
+        </div>
+        <div class="data-point">
+          <h3>timezone</h3>
+          <h2>UTC -05:00</h2>
+        </div>
+        <div class="data-point">
+          <h3>isp</h3>
+          <h2>SpaceX Starlink</h2>
+        </div>
+      </section>
+    </main>
+
+    <!-- Search for any IP address or domain IP Address Location Timezone UTC -->
     <!-- add offset value dynamically using the API -->
-    ISP
-    <h1 class="test-heading">Random shit</h1>
+    <!-- ISP -->
   </body>
-  <!-- <script
-    type="module"
-    src="./node_modules/ip-geolocation-api-javascript-sdk/IPGeolocationAPI.js"
-    defer
-  ></script>
-  <script
-    type="module"
-    src="./node_modules/ip-geolocation-api-javascript-sdk/GeolocationParams.js"
-    defer
-  ></script>
-  <script
-    type="module"
-    src="./node_modules/ip-geolocation-api-javascript-sdk/TimezoneParams.js"
-    defer
-  ></script> -->
   <script src="./script.js" defer></script>
   <script src="./app.js" defer></script>
 </html>

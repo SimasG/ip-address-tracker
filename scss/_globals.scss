@@ -31,6 +31,7 @@ li,
 input,
 ::placeholder {
   font-family: "Rubik", sans-serif;
+  font-weight: 500;
 }
 
 p,
@@ -50,6 +51,10 @@ a {
   text-decoration: none;
 }
 
+input {
+  outline: none;
+}
+
 input,
 button {
   cursor: pointer;
@@ -60,22 +65,23 @@ button {
   background: none;
 }
 
-// input[type="text"]::-webkit-search-decoration,
-// input[type="text"]::-webkit-search-cancel-button,
-// input[type="text"]::-webkit-search-results-button,
-// input[type="text"]::-webkit-search-results-decoration {
-//   -webkit-appearance: none;
-// }
+input[type="text"]::-webkit-search-decoration,
+input[type="text"]::-webkit-search-cancel-button,
+input[type="text"]::-webkit-search-results-button,
+input[type="text"]::-webkit-search-results-decoration {
+  -webkit-appearance: none;
+}
 
 // input[type="number"]::-webkit-search-decoration,
 // input[type="number"]::-webkit-search-cancel-button,
 // input[type="number"]::-webkit-search-results-button,
 // input[type="number"]::-webkit-search-results-decoration {
 //   -webkit-appearance: none;
+//   border: none;
 // }
 
-// input::-webkit-outer-spin-button,
-// input::-webkit-inner-spin-button {
-//   -webkit-appearance: none;
-//   margin: 0;
-// }
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
