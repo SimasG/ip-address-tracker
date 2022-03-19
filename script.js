@@ -1,3 +1,8 @@
+// TODO: Ensure the base case works (every user sees info about their IP Address by default) -> DONE
+// TODO: Add ability to input other IP addresses & get the remaining info
+// TODO Add ability to input domain names & get the info
+// TODO: Maps functionality -> make LeafletJS work
+
 const url =
   "https://api.ipgeolocation.io/ipgeo?apiKey=8a1a101fc03c4006a08b3109d1ba1c63";
 
@@ -5,8 +10,6 @@ const ipAddress = document.querySelector(".ip-address");
 const ipLocation = document.querySelector(".ip-location");
 const timezoneOffset = document.querySelector(".timezone-offset");
 const isp = document.querySelector(".isp");
-
-window.addEventListener("load", fetch(url));
 
 fetch(url)
   .then((data) => data.json())
