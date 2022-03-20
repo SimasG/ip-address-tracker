@@ -23,3 +23,7 @@ https://leafletjs.com/SlavaUkraini/
 // }
 
 // getData();
+
+// fetch(url)
+// .then((data) => data.json())
+// .then((ipData) => populateData(ipData));
