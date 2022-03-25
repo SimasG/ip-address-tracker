@@ -36,6 +36,12 @@ async function getIpAddress(address) {
   //   displayNoResults(data);
 }
 
+const fetchData = async () => {
+  const plz = await fetch(`http://127.0.0.1:5500/plz`, { method: GET });
+  const plzJSON = await plz.json();
+  console.log(plzJSON);
+};
+
 const displayData = (fetchedData) => {
   const utcDate = new Date().toString().match(/([A-Z]+[\+-][0-9]+)/)[1];
 
@@ -53,3 +59,4 @@ form.addEventListener("submit", function (e) {
 });
 
 getIpAddress(address);
+fetchData();

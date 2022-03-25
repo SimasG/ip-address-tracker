@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <base href="/" />
+
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="./images/favicon-32x32.png"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" type="text/css" href="../static/scss/styles.css" />
+
+    <title>IP Address Tracker</title>
+  </head>
+  <body>
+    <h1>IP Address Tracker</h1>
+    <main>
+      <form class="search-container" action="/" method="post">
+        <input type="text" name="input" id="ip-address-input" />
+        <button class="submit-btn">
+          <img
+            src="../static/images/icon-arrow.svg"
+            alt="arrow icon"
+            class="icon-arrow"
+          />
+        </button>
+      </form>
+      <section class="main-container">
+        <div class="data-point">
+          <h3>ip address</h3>
+          <h2 class="ip-address"></h2>
+        </div>
+        <div class="data-point">
+          <h3>Location</h3>
+          <h2 class="ip-location"></h2>
+        </div>
+        <div class="data-point">
+          <h3>timezone</h3>
+          <h2 class="timezone-offset"></h2>
+        </div>
+        <div class="data-point">
+          <h3>isp</h3>
+          <h2 class="isp"></h2>
+        </div>
+      </section>
+    </main>
+
+    <!-- Search for any IP address or domain IP Address Location Timezone UTC -->
+    <!-- add offset value dynamically using the API -->
+    <!-- ISP -->
+  </body>
+  <script src="../static/script.js" defer></script>
+</html>
