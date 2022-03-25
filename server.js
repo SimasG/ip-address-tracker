@@ -17,7 +17,7 @@ import cors from "cors";
 import methodOverride from "method-override";
 import dns from "dns";
 // why are we importing "config" in an object?
-// import { config } from "dotenv";
+import { config } from "dotenv";
 
 if (process.env.NODE_ENV !== "production") {
   // "config()" function will read our environment variables in .env and save them
@@ -33,6 +33,8 @@ app.use(methodOverride("_method"));
 app.use(express.json());
 // allows cross origin requests (i.e. any URL can make requests to the server URL)
 app.use(cors({ origin: true }));
+
+app.use("/static", express.static("./static"));
 
 app.set("view engine", "ejs");
 // app.set("views", path.join(__dirname, "/views"));
@@ -85,7 +87,7 @@ let fakeDB = [
 // });
 
 const hostname = "127.0.0.1";
-const port = 5500;
+const port = 5502;
 
 app.listen(port, hostname, () => {
   console.log(`Server running at http://${hostname}:${port}/`);
