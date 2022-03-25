@@ -34,6 +34,7 @@ app.use(express.json());
 // allows cross origin requests (i.e. any URL can make requests to the server URL)
 app.use(cors({ origin: true }));
 
+// * allows to send over the static files to the client (css, js, images, etc.)
 app.use("/static", express.static("./static"));
 
 app.set("view engine", "ejs");
