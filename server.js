@@ -1,15 +1,8 @@
-// TODO1: get input value from my form
+// TODO1: get input value from my form -> DONE
 // 1. Create "app.post" route
 // 2. Parse my input value into req.body.domain/ip
 // TODO2: use the input value for getIpAddress()
 // TODO3: use getIpAddress() result for displayData() (should happen by default)
-
-// const express = require("express");
-// const app = express();
-// const path = require("path");
-// const cors = require("cors");
-// const methodOverride = require("method-override");
-// const dns = require("dns");
 
 import express from "express";
 import path from "path";
@@ -61,8 +54,8 @@ app.post("/", (req, res) => {
   const input = req.body.domain;
   dns.resolve4(input, (err, addresses) => {
     if (err) throw err;
-    const ipAddress = addresses[0];
-    res.status(200).send({ ipAddress });
+    const fetchedIpAddress = addresses[0];
+    res.send({ fetchedIpAddress: fetchedIpAddress });
   });
 });
 
