@@ -21,26 +21,41 @@ const input = document.querySelector("#ip-address-input");
 const url = "https://api.ipgeolocation.io/ipgeo?apiKey=";
 let address;
 
+async function getIPFromDomain(domain) {
+  const ip = await fetch(`http://${hostname}:${port}/`, {
+    method: "POST",
+    body: JSON.stringify({ domain: domain }),
+    headers: { "Content-Type": "application/json" },
+  });
+
+  const ipJson = await ip.json();
+
+  const response = await fetch(`${url}${apiKey}&ip=${ipJson.ipAddress}`);
+
+  const data = await response.json();
+
+  displayData(data);
+}
+
 async function getIpAddress(address) {
   if (address) {
+    // domain or ip
+
     const response = await fetch(`${url}${apiKey}&ip=${address}`);
     const data = await response.json();
-    console.log(data);
+    // console.log(data);
     displayData(data);
   } else {
     const response = await fetch(`${url}${apiKey}`);
     const data = await response.json();
-    console.log(data);
+    // console.log(data);
     displayData(data);
   }
   //   displayNoResults(data);
 }
 
-const fetchData = async () => {
-  const plz = await fetch(`http://127.0.0.1:5500/plz`, { method: GET });
-  const plzJSON = await plz.json();
-  console.log(plzJSON);
-};
+const hostname = "127.0.0.1";
+const port = 5502;
 
 const displayData = (fetchedData) => {
   const utcDate = new Date().toString().match(/([A-Z]+[\+-][0-9]+)/)[1];
@@ -51,7 +66,7 @@ const displayData = (fetchedData) => {
   isp.innerHTML = fetchedData.isp;
 };
 
-form.addEventListener("submit", function (e) {
+form.addEventListener("submit", (e) => {
   e.preventDefault();
   address = input.value;
   getIpAddress(address);
@@ -59,4 +74,3 @@ form.addEventListener("submit", function (e) {
 });
 
 getIpAddress(address);
-fetchData();

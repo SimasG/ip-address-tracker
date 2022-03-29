@@ -27,66 +27,44 @@ if (process.env.NODE_ENV !== "production") {
 const app = express();
 
 app.use(express.urlencoded({ extended: true }));
-app.use(express.json());
 app.use(methodOverride("_method"));
 // converts incoming body into JSON automatically
 app.use(express.json());
 // allows cross origin requests (i.e. any URL can make requests to the server URL)
-app.use(cors({ origin: true }));
+
+// * I needed to set cors origin to true because I was making a request from my server.js (on localhost:3000)
+// * to script.js (on 127.0.1.1/index.html). Now both files reside in the same URL and cors modification isn't required.
+// app.use(cors({ origin: true }));
 
 // * Allows to send over the static files to the client (css, js, images, etc.)
 // * Otherwise, the browser would try to call the files from the host domain (e.g. localhost:3000/scss/styles.csss)
 app.use("/static", express.static("./static"));
 
 app.set("view engine", "ejs");
+
+// * the line below doesn't work with ES6 module import syntax
 // app.set("views", path.join(__dirname, "/views"));
 
 app.get("/", (req, res) => {
-  // res.send("ROOT ROUTE WORKS!");
-  // console.log(getIpAddress());
-  // res.render("index", getIpAddress());
   res.render("index");
 });
 
-app.get("/plz", (req, res) => {
-  res.send({ Plz: "plz" });
-  // console.log(getIpAddress());
-  // res.render("index", getIpAddress());
-  // res.render("index");
-});
-
-// app.post("/", (req, res) => {
+// app.post("/test", (req, res) => {
 //   const input = req.body.input;
-//   console.log(input);
-//   res.redirect("/");
+//   if (input) console.log(input);
+//   res.send(input);
 // });
 
 // let url = "google.com";
 
-let fakeDB = [
-  { data1: 123 },
-  { data2: 321 },
-  { data3: 456 },
-  { data4: 654 },
-  { data5: 789 },
-  { data6: 987 },
-];
-
-// dns.resolve4(url, (err, addresses) => {
-//   if (err) throw err;
-//   console.log(addresses[0]);
-// });
-
-// app.post("/getAddress", (req, res) => {
-//   console.log(req.body);
-//   res.send("IT WORKED!");
-// });
-
-// const port = 5500;
-
-// app.listen(`http://127.0.0.1:${port}`, () => {
-//   console.log(`App available on http://127.0.0.1:${port}`);
-// });
+app.post("/", (req, res) => {
+  const input = req.body.domain;
+  dns.resolve4(input, (err, addresses) => {
+    if (err) throw err;
+    const ipAddress = addresses[0];
+    res.status(200).send({ ipAddress });
+  });
+});
 
 const hostname = "127.0.0.1";
 const port = 5502;
