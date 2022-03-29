@@ -118,12 +118,12 @@ input::-webkit-inner-spin-button {
 body {
   background-image: url("../images/pattern-bg.png");
   position: relative;
-  background-size: 300%;
+  background-size: 180rem 31rem;
   background-repeat: no-repeat;
   background-position: top;
   top: 0;
   left: 0;
-  padding: 3.2rem 2.4rem;
+  padding: 3.2rem 0 0 0;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -149,6 +149,8 @@ body h1 {
 }
 
 body main {
+  z-index: 1000;
+  padding: 0 2.4rem;
   margin: 0 auto;
 }
 
@@ -216,5 +218,11 @@ body main .main-container .data-point h2 {
   font-weight: 500;
   letter-spacing: -0.018rem;
   color: #2b2b2b;
+}
+
+body #map {
+  margin-top: -19.1rem;
+  height: 52.8rem;
+  width: 37.5rem;
 }
 /*# sourceMappingURL=styles.css.map */

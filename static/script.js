@@ -1,11 +1,11 @@
 // TODO: Ensure the base case works (every user sees info about their IP Address by default) -> DONE
 // TODO: Add ability to input other IP addresses & get the remaining info -> DONE
 // TODO Add ability to input domain names & get the info -> DONE
-// TODO: Handle cases where there is no info & basic validation -> WIP
+// TODO: Handle cases where there is no info & basic validation -> DONE
 // TODO: Maps functionality -> make LeafletJS work
-// TODO: (maybe) sharpen up UI (info messages, disclaimers, etc.)
-
+// TODO: Fix the timezone display
 // TODO: (later) hide the API key
+
 // require("dotenv").config();
 // console.log(process.env);
 // const apiKey = process.env.API_KEY;
@@ -81,3 +81,14 @@ async function getIPFromDomain(domain) {
 }
 
 getIpAddress();
+
+// Map API
+const map = L.map("map").setView([51.505, -0.09], 13);
+
+const osm = L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+  attribution:
+    '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+});
+
+osm.addTo(map);
+map.zoomControl.remove();

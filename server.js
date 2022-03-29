@@ -1,9 +1,3 @@
-// TODO1: get input value from my form -> DONE
-// 1. Create "app.post" route
-// 2. Parse my input value into req.body.domain/ip
-// TODO2: use the input value for getIpAddress()
-// TODO3: use getIpAddress() result for displayData() (should happen by default)
-
 import express from "express";
 import path from "path";
 import cors from "cors";
@@ -41,14 +35,6 @@ app.set("view engine", "ejs");
 app.get("/", (req, res) => {
   res.render("index");
 });
-
-// app.post("/test", (req, res) => {
-//   const input = req.body.input;
-//   if (input) console.log(input);
-//   res.send(input);
-// });
-
-// let url = "google.com";
 
 app.post("/", (req, res) => {
   const input = req.body.domain;
