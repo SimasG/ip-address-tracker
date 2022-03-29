@@ -1,7 +1,7 @@
 // TODO: Ensure the base case works (every user sees info about their IP Address by default) -> DONE
 // TODO: Add ability to input other IP addresses & get the remaining info -> DONE
 // TODO Add ability to input domain names & get the info -> DONE
-// TODO: Handle cases where there is no info
+// TODO: Handle cases where there is no info & basic validation -> WIP
 // TODO: Maps functionality -> make LeafletJS work
 // TODO: (maybe) sharpen up UI (info messages, disclaimers, etc.)
 
@@ -26,10 +26,10 @@ async function getIpAddress(address) {
     // domain or ip
     if (
       (address.match(/\./g) || []).length === 3 &&
-      /^[0-9,.]*$/.test(address) === true
+      /^[0-9.]*$/.test(address) === true
     ) {
-      console.log("It's an IP Address!");
       const response = await fetch(`${url}${apiKey}&ip=${address}`);
+      if (!response.ok) return alert("The IP address is not valid!");
       const data = await response.json();
       displayData(data);
     } else if (
