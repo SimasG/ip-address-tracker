@@ -59,11 +59,13 @@ async function getIpAddress(address) {
 }
 
 const displayData = (fetchedData) => {
-  const utcDate = new Date().toString().match(/([A-Z]+[\+-][0-9]+)/)[1];
+  // const utcDate = new Date().toString().match(/([A-Z]+[\+-][0-9]+)/)[1];
+  const localDate = fetchedData.time_zone.current_time;
+  const offset = localDate.substring(localDate.length - 5);
 
   ipAddress.innerHTML = fetchedData.ip;
   ipLocation.innerHTML = `${fetchedData.city}, ${fetchedData.state_prov} ${fetchedData.zipcode}`;
-  timezoneOffset.innerHTML = utcDate;
+  timezoneOffset.innerHTML = `GMT ${offset}`;
   isp.innerHTML = fetchedData.isp;
 };
 
