@@ -31,7 +31,12 @@ async function getIpAddress(address) {
       const response = await fetch(`${url}${apiKey}&ip=${address}`);
       if (!response.ok) return alert("The IP address is not valid!");
       const data = await response.json();
+      console.log(data);
       displayData(data);
+
+      const latid = data.latitude;
+      const longit = data.longitude;
+      renderMap(latid, longit);
     } else if (
       (address.match(/\./g) || []).length === 1 ||
       (address.match(/\./g) || []).length === 2
@@ -44,7 +49,12 @@ async function getIpAddress(address) {
   } else {
     const response = await fetch(`${url}${apiKey}`);
     const data = await response.json();
+    console.log(data);
     displayData(data);
+
+    const latid = data.latitude;
+    const longit = data.longitude;
+    renderMap(latid, longit);
   }
 }
 
@@ -66,6 +76,7 @@ form.addEventListener("submit", (e) => {
 
 const hostname = "127.0.0.1";
 const port = 5505;
+let map;
 
 async function getIPFromDomain(domain) {
   const ip = await fetch(`http://${hostname}:${port}/`, {
@@ -77,18 +88,48 @@ async function getIPFromDomain(domain) {
   const ipJson = await ip.json();
   const response = await fetch(`${url}${apiKey}&ip=${ipJson.fetchedIpAddress}`);
   const data = await response.json();
+  console.log(data);
+
+  const latid = data.latitude;
+  const longit = data.longitude;
+  renderMap(latid, longit);
+
   displayData(data);
 }
 
-getIpAddress();
-
 // Map API
-const map = L.map("map").setView([51.505, -0.09], 13);
+function renderMap(latid, longit) {
+  if (map != undefined) {
+    map.off();
+    map.remove();
+    map = new L.map("map", {
+      zoomControl: false,
+    }).setView([latid, longit], 13);
+    // .locate({ setView: true, maxZoom: 16 });
+    const osm = L.tileLayer(
+      "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+      {
+        attribution:
+          '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+      }
+    );
+    osm.addTo(map);
+    L.marker([latid, longit]).addTo(map);
+  } else {
+    map = new L.map("map", {
+      zoomControl: false,
+    }).setView([latid, longit], 13);
+    // .locate({ setView: true, maxZoom: 16 });
+    const osm = L.tileLayer(
+      "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+      {
+        attribution:
+          '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+      }
+    );
+    osm.addTo(map);
+    L.marker([latid, longit]).addTo(map);
+  }
+}
 
-const osm = L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-  attribution:
-    '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-});
-
-osm.addTo(map);
-map.zoomControl.remove();
+getIpAddress();
