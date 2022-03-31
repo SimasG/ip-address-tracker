@@ -39,7 +39,10 @@ app.post("/", (req, res) => {
   const input = req.body.domain;
   dns.resolve4(input, (err, addresses) => {
     console.log(input, addresses);
-    if (err) res.send({ error: err });
+    if (err) {
+      res.send({ error: err });
+      return;
+    }
     const fetchedIpAddress = addresses[0];
     res.send({ fetchedIpAddress: fetchedIpAddress });
   });
@@ -50,7 +53,10 @@ app.post("/ip", async (req, res) => {
   const ip = address ? `&ip=${address}` : "";
   const url = `https://api.ipgeolocation.io/ipgeo?apiKey=${process.env.API_KEY}${ip}`;
   const response = await fetch(`${url}`);
-  if (!response.ok) res.send({ error: "The IP address is not valid!" });
+  if (!response.ok) {
+    res.send({ error: "The IP address is not valid!" });
+    return;
+  }
   const data = await response.json();
   res.status(200).send({ data: data });
 });

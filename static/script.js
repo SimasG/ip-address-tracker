@@ -31,7 +31,7 @@ async function getIpAddress(address) {
       const ipJson = await ip.json();
       const { error, data } = ipJson;
       if (error) {
-        return alert(error);
+        alert(error);
       } else {
         displayData(data);
 
@@ -121,7 +121,6 @@ function renderMap(latid, longit) {
     map = new L.map("map", {
       zoomControl: false,
     }).setView([latid, longit], 13);
-    // .locate({ setView: true, maxZoom: 16 });
     const osm = L.tileLayer(
       "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
       {
@@ -135,7 +134,6 @@ function renderMap(latid, longit) {
     map = new L.map("map", {
       zoomControl: false,
     }).setView([latid, longit], 13);
-    // .locate({ setView: true, maxZoom: 16 });
     const osm = L.tileLayer(
       "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
       {
