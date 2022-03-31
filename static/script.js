@@ -1,15 +1,6 @@
-// TODO: Ensure the base case works (every user sees info about their IP Address by default) -> DONE
-// TODO: Add ability to input other IP addresses & get the remaining info -> DONE
-// TODO Add ability to input domain names & get the info -> DONE
-// TODO: Handle cases where there is no info & basic validation -> DONE
-// TODO: Maps functionality -> make LeafletJS work
-// TODO: Fix the timezone display
-// TODO: (later) hide the API key
-
-// require("dotenv").config();
-// console.log(process.env);
-// const apiKey = process.env.API_KEY;
-const apiKey = "112af9d778a540e0bf4baba8316ab539";
+// TODO: (later) hide the API key -> DONE
+// TODO: Fix bug: domain name validation -> DONE
+// TODO: Fix bug: IP address validation ->
 
 const ipAddress = document.querySelector(".ip-address");
 const ipLocation = document.querySelector(".ip-location");
@@ -18,8 +9,9 @@ const isp = document.querySelector(".isp");
 const form = document.querySelector(".search-container");
 const input = document.querySelector("#ip-address-input");
 
-const url = "https://api.ipgeolocation.io/ipgeo?apiKey=";
 let address;
+const hostname = "127.0.0.1";
+const port = 5505;
 
 async function getIpAddress(address) {
   if (address) {
@@ -28,18 +20,31 @@ async function getIpAddress(address) {
       (address.match(/\./g) || []).length === 3 &&
       /^[0-9.]*$/.test(address) === true
     ) {
-      const response = await fetch(`${url}${apiKey}&ip=${address}`);
-      if (!response.ok) return alert("The IP address is not valid!");
-      const data = await response.json();
-      console.log(data);
-      displayData(data);
+      const ip = await fetch(`http://${hostname}:${port}/ip`, {
+        method: "POST",
+        // Sending the body to the backend. There the ip address will be used for the API endpoint
+        // to fetch the correct data
+        body: JSON.stringify({ address: address }),
+        headers: { "Content-Type": "application/json" },
+      });
+      // Finally fetching some code from the server side!!!
+      const ipJson = await ip.json();
+      const { error, data } = ipJson;
+      if (error) {
+        return alert(error);
+      } else {
+        displayData(data);
 
-      const latid = data.latitude;
-      const longit = data.longitude;
-      renderMap(latid, longit);
+        const latid = data.latitude;
+        const longit = data.longitude;
+        renderMap(latid, longit);
+      }
     } else if (
-      (address.match(/\./g) || []).length === 1 ||
-      (address.match(/\./g) || []).length === 2
+      // (address.match(/\./g) || []).length === 1 ||
+      // (address.match(/\./g) || []).length === 2
+      /^[a-zA-Z0-9][a-zA-Z0-9-]{1,61}[a-zA-Z0-9]\.[a-zA-Z]{2,}$/.test(
+        address
+      ) === true
     ) {
       console.log("It's a domain name!");
       getIPFromDomain(address);
@@ -47,9 +52,14 @@ async function getIpAddress(address) {
       alert("Please enter a valid IP address or domain");
     }
   } else {
-    const response = await fetch(`${url}${apiKey}`);
-    const data = await response.json();
-    console.log(data);
+    const ip = await fetch(`http://${hostname}:${port}/ip`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+    });
+    // Finally fetching some code from the server side!!!
+    const ipJson = await ip.json();
+    const { data } = ipJson;
+    // const data = ipJson.data;
     displayData(data);
 
     const latid = data.latitude;
@@ -58,8 +68,33 @@ async function getIpAddress(address) {
   }
 }
 
+async function getIPFromDomain(domain) {
+  console.log(domain);
+  const ip = await fetch(`http://${hostname}:${port}/`, {
+    method: "POST",
+    body: JSON.stringify({ domain: domain }),
+    headers: { "Content-Type": "application/json" },
+  });
+  // Finally fetching some code from the server side!!!
+  const ipJson = await ip.json();
+  const { fetchedIpAddress, error } = ipJson;
+  if (error) return alert(error);
+
+  const response = await fetch(`http://${hostname}:${port}/domain`, {
+    method: "POST",
+    body: JSON.stringify({ fetchedIpAddress: fetchedIpAddress }),
+    headers: { "Content-Type": "application/json" },
+  });
+  const responseJson = await response.json();
+  const { data } = responseJson;
+  displayData(data);
+
+  const latid = data.latitude;
+  const longit = data.longitude;
+  renderMap(latid, longit);
+}
+
 const displayData = (fetchedData) => {
-  // const utcDate = new Date().toString().match(/([A-Z]+[\+-][0-9]+)/)[1];
   const localDate = fetchedData.time_zone.current_time;
   const offset = localDate.substring(localDate.length - 5);
 
@@ -76,30 +111,9 @@ form.addEventListener("submit", (e) => {
   input.value = "";
 });
 
-const hostname = "127.0.0.1";
-const port = 5505;
+// Map API
 let map;
 
-async function getIPFromDomain(domain) {
-  const ip = await fetch(`http://${hostname}:${port}/`, {
-    method: "POST",
-    body: JSON.stringify({ domain: domain }),
-    headers: { "Content-Type": "application/json" },
-  });
-  // Finally fetching some code from the server side!!!
-  const ipJson = await ip.json();
-  const response = await fetch(`${url}${apiKey}&ip=${ipJson.fetchedIpAddress}`);
-  const data = await response.json();
-  console.log(data);
-
-  const latid = data.latitude;
-  const longit = data.longitude;
-  renderMap(latid, longit);
-
-  displayData(data);
-}
-
-// Map API
 function renderMap(latid, longit) {
   if (map != undefined) {
     map.off();

@@ -1,10 +1,9 @@
 import express from "express";
-import path from "path";
-import cors from "cors";
 import methodOverride from "method-override";
 import dns from "dns";
 // why are we importing "config" in an object?
 import { config } from "dotenv";
+import fetch from "node-fetch";
 
 if (process.env.NODE_ENV !== "production") {
   // "config()" function will read our environment variables in .env and save them
@@ -39,10 +38,31 @@ app.get("/", (req, res) => {
 app.post("/", (req, res) => {
   const input = req.body.domain;
   dns.resolve4(input, (err, addresses) => {
-    if (err) throw err;
+    console.log(input, addresses);
+    if (err) res.send({ error: err });
     const fetchedIpAddress = addresses[0];
     res.send({ fetchedIpAddress: fetchedIpAddress });
   });
+});
+
+app.post("/ip", async (req, res) => {
+  const address = req.body.address;
+  const ip = address ? `&ip=${address}` : "";
+  const url = `https://api.ipgeolocation.io/ipgeo?apiKey=${process.env.API_KEY}${ip}`;
+  const response = await fetch(`${url}`);
+  if (!response.ok) res.send({ error: "The IP address is not valid!" });
+  const data = await response.json();
+  res.status(200).send({ data: data });
+});
+
+app.post("/domain", async (req, res) => {
+  const fetchedIpAddress = req.body.fetchedIpAddress;
+  const ip = `&ip=${fetchedIpAddress}`;
+  const url = `https://api.ipgeolocation.io/ipgeo?apiKey=${process.env.API_KEY}${ip}`;
+  const response = await fetch(`${url}`);
+  if (!response.ok) res.send({ error: "Not valid IP" });
+  const data = await response.json();
+  res.status(200).send({ data: data });
 });
 
 const hostname = "127.0.0.1";
